@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  flask-backend:
+    container_name: flask-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"  # Map host port 8000 to container port 8000
+    environment:
+      - AWS_ACCESS_KEY=xxxxx
+      - AWS_SECRET_KEY=xxxxxxxxx
+      - DYNAMODB_REGION=eu-west-1
+      - TABLE_NAME=xxxxxx
+    restart: always
