@@ -4,50 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Callsign Environment Scaler</title>
-    <!-- Montserrat Font Import -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         /* General Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f9fafc;
-            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        header, footer {
-            background: linear-gradient(to right, #004C7F, #0056b3);
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, rgb(21, 94, 117), rgb(21, 94, 117));
             color: white;
-            text-align: center;
-            padding: 12px 0;
+            text-align: center; /* Align the header text to the left */
+            padding: 12px 20px; /* Reduced padding for header */
             font-family: 'Montserrat', sans-serif;
             letter-spacing: 1px;
+            width: 100%;
+            z-index: 200; /* Higher z-index to bring it above the sidebar */
+            position: relative; /* Ensure it respects the stacking context */
         }
+
         header h1 {
             margin: 0;
-            font-size: 1.8em;
-            font-weight: 600;
+            font-size: 1em; /* Reduced font size */
+            font-weight: 500;
         }
+
+        /* Footer Styles */
         footer {
-            font-size: 0.9em;
-            font-weight: 400;
+            background: rgb(31, 41, 55);
+            color: white;
+            text-align: center;
+            padding: 2px 0; /* Reduced padding for footer */
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            width: 100%;
+            margin-top: auto;
+            z-index: 200; /* Higher z-index to bring it above the sidebar */
+            position: relative; /* Ensure it respects the stacking context */
         }
-        main {
-            margin: 30px auto;
-            width: 90%;
-            max-width: 1000px;
-            background-color: #ffffff;
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: linear-gradient(to right, rgb(21, 94, 117), rgb(21, 94, 117));
+            width: 180px;
+            background-color: #0097a7;
+            color: white;
+            padding-top: 40px; /* Increased top padding to move sidebar down */
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 99; /* Lower z-index to ensure the sidebar is behind the header and footer */
+            margin-top: 44px; /* Ensures that sidebar doesn’t go behind the header */
+        }
+
+        .sidebar a {
+            padding: 12px;
+            text-decoration: none;
+            font-size: 1.1em;
+            color: white;
+            display: block;
+            /* border-bottom: 1px solid #444; */
+            transition: background 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #0097a7;
+        }
+
+        /* Content Area */
+        .content {
+            margin-left: 200px;
             padding: 20px;
+            width: calc(100% - 250px);
+            background-color: #ffffff;
+            max-width: 1000px;
             border-radius: 10px;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            flex-grow: 1;
         }
-        h2 {
-            color: #004C7F;
-            font-size: 1.3em;
-            text-transform: uppercase;
-            border-bottom: 2px solid #004C7F;
-            padding-bottom: 8px;
-        }
+
         .description p {
             font-size: 1em;
             color: #555;
@@ -63,12 +106,14 @@
             gap: 5px;
             margin-bottom: 30px;
         }
+
         label {
             font-size: 0.95em;
             font-weight: bold;
             color: #555;
             margin-bottom: 5px;
         }
+
         input[type="text"] {
             padding: 12px;
             font-size: 1em;
@@ -77,12 +122,14 @@
             outline: none;
             transition: all 0.3s;
         }
+
         input[type="text"]:focus {
-            border-color: #004C7F;
+            border-color: rgb(21, 94, 117);
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
+
         button {
-            padding: 12px;
+            padding: 8px 15px; /* Reduced padding to make the button smaller */
             font-size: 1em;
             background-color: #28a745;
             color: white;
@@ -91,10 +138,11 @@
             cursor: pointer;
             transition: all 0.3s;
         }
+
         button:hover {
             background-color: #218838;
         }
-
+        button { width: 50%; }
         /* Table Styles */
         table {
             width: 100%;
@@ -103,35 +151,43 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             overflow: hidden;
+            table-layout: fixed;
         }
+
         thead {
-            background: linear-gradient(to right, #004C7F, #0056b3);
+            background: linear-gradient(to right, rgb(21, 94, 117), rgb(21, 94, 117));
             color: white;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         th {
             padding: 15px;
             text-align: center;
             font-size: 1em;
         }
+
         tbody tr:nth-child(odd) {
             background-color: #f2f9ff;
         }
+
         tbody tr:nth-child(even) {
             background-color: #e6f2ff;
         }
+
         tbody tr:hover {
             background-color: #cce5ff;
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         td {
             padding: 12px;
             text-align: center;
             font-size: 1.05em;
             color: #333;
         }
+
         .delete-btn {
             color: #dc3545;
             font-size: 1.2em;
@@ -139,27 +195,30 @@
             cursor: pointer;
             transition: color 0.3s;
         }
+
         .delete-btn:hover {
             color: #bd2130;
         }
-        .row-description {
-            font-size: 0.9em;
-            color: #555;
-            text-align: left;
-            padding: 5px 0;
+
+        /* Sticky Header */
+        thead th {
+            position: sticky;
+            top: 0;
+            background-color: rgb(21, 94, 117);
+            z-index: 10;
         }
 
         /* Modal Styles */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
+            width: 100%;
+            height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4); 
+            background-color: rgba(0, 0, 0, 0.4);
             padding-top: 60px;
         }
 
@@ -177,7 +236,7 @@
         .modal-header {
             font-size: 1.2em;
             font-weight: bold;
-            color: #004C7F;
+            color: rgb(21, 94, 117);
         }
 
         .modal-footer {
@@ -186,7 +245,7 @@
 
         .modal button {
             padding: 8px 15px;
-            background-color: #004C7F;
+            background-color: rgb(21, 94, 117);
             color: white;
             border: none;
             border-radius: 5px;
@@ -196,37 +255,39 @@
         .modal button:hover {
             background-color: #0056b3;
         }
-
-        /* Other styles for buttons */
-        .delete-btn {
-            color: #dc3545;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
     </style>
 </head>
 <body>
+
+    <!-- Header -->
     <header>
-        <h1>Callsign Environment Scaler</h1>
+        <h1>Callsign NonProd Portal</h1>
     </header>
 
-    <main>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/">Scaler</a>
+        <a href="/">Cluster Info</a>
+        <a href="/">Settings</a>
+        <a href="/">Help</a>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content">
         <h2>Prevent IDA Namespace to Scale Down</h2>
         <div class="description">
             <p>Specify the IDA Namespaces that you want to exclude from automatic scaling down.</p>
         </div>
-        
+
         <form action="/" method="POST">
             <label for="cluster_name">Cluster Name</label>
             <input type="text" id="cluster_name" name="cluster_name" placeholder="Enter Cluster Name" required>
             <p class="row-description">Enter the Kubernetes cluster name e.g csnp-blue, csnpsit-green, csnfteuw1-grey</p>
-        
+
             <label for="namespace_name">IDA Namespace</label>
             <input type="text" id="namespace_name" name="namespace_name" placeholder="Enter IDA Namespace" required>
             <p class="row-description">Provide the IDA namespace e.g callsign-dev-a, callsign-sit-b </p>
-        
+
             <button type="submit">Submit</button>
         </form>
 
@@ -252,8 +313,9 @@
                 {% endfor %}
             </tbody>
         </table>
-    </main>
+    </div>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; Powered By: Callsign DevOps Team</p>
     </footer>
@@ -266,56 +328,31 @@
                 <p>Confirm Deletion</p>
             </div>
             <div class="modal-body">
-                <p>Are you good with scaling down this cluster and namespace?</p>
-                <p id="clusterName"></p>
-                <p id="namespaceName"></p>
+                <p>Are you sure you want to scale down this cluster and namespace?</p>
             </div>
             <div class="modal-footer">
-                <button onclick="deleteEntry()">Delete</button>
-                <button onclick="closeModal()">Cancel</button>
+                <button onclick="deleteItem()">Yes</button>
+                <button onclick="closeModal()">No</button>
             </div>
         </div>
     </div>
 
     <script>
-        let clusterName = '';
-        let namespaceName = '';
-
-        // Function to open the modal
-        function openModal(cluster, namespace) {
-            clusterName = cluster;
-            namespaceName = namespace;
-            document.getElementById("clusterName").innerText = `Cluster Name: ${clusterName}`;
-            document.getElementById("namespaceName").innerText = `Namespace: ${namespaceName}`;
-            document.getElementById("confirmationModal").style.display = "block";
+        function openModal(clusterName, namespaceName) {
+            // Populate modal with the names
+            document.querySelector('.modal-body p').textContent = `Are you sure you want to scale down the cluster ${clusterName} and namespace ${namespaceName}?`;
+            document.getElementById('confirmationModal').style.display = 'block';
         }
 
-        // Function to close the modal
         function closeModal() {
-            document.getElementById("confirmationModal").style.display = "none";
+            document.getElementById('confirmationModal').style.display = 'none';
         }
 
-        // JavaScript to handle deletion
-        function deleteEntry() {
-            fetch(`/delete/${clusterName}/${namespaceName}`, {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert('Entry deleted successfully');
-                    window.location.reload();
-                } else {
-                    alert('Error deleting the entry');
-                }
-                closeModal(); // Close modal after the action
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while deleting the entry.');
-                closeModal(); // Close modal after the action
-            });
+        function deleteItem() {
+            // Add your delete logic here
+            closeModal();
         }
     </script>
+
 </body>
 </html>
